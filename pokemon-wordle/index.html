@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pokémon Wordle - Guess the Stats</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="game-container">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-content">
+                <h1 class="title">Pokémon Wordle</h1>
+                <div class="mode-selector">
+                    <button class="mode-btn active" data-mode="daily">📅 Daily</button>
+                    <button class="mode-btn" data-mode="endless">♾️ Endless</button>
+                </div>
+                <button class="info-btn" id="infoBtn">ℹ️</button>
+            </div>
+        </header>
+
+        <!-- Main Game Area -->
+        <main class="main-content">
+            <!-- Stats Display -->
+            <div class="stats-container">
+                <div class="stat-card">
+                    <div class="stat-label">HP</div>
+                    <div class="stat-bar-container">
+                        <div class="stat-bar" id="hpBar"></div>
+                    </div>
+                    <div class="stat-value" id="hpValue">-</div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-label">ATK</div>
+                    <div class="stat-bar-container">
+                        <div class="stat-bar" id="atkBar"></div>
+                    </div>
+                    <div class="stat-value" id="atkValue">-</div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-label">DEF</div>
+                    <div class="stat-bar-container">
+                        <div class="stat-bar" id="defBar"></div>
+                    </div>
+                    <div class="stat-value" id="defValue">-</div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-label">SP.ATK</div>
+                    <div class="stat-bar-container">
+                        <div class="stat-bar" id="spaBar"></div>
+                    </div>
+                    <div class="stat-value" id="spaValue">-</div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-label">SP.DEF</div>
+                    <div class="stat-bar-container">
+                        <div class="stat-bar" id="sdfBar"></div>
+                    </div>
+                    <div class="stat-value" id="sdfValue">-</div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-label">SPD</div>
+                    <div class="stat-bar-container">
+                        <div class="stat-bar" id="spdBar"></div>
+                    </div>
+                    <div class="stat-value" id="spdValue">-</div>
+                </div>
+            </div>
+
+            <!-- Filter Section -->
+            <div class="filter-section">
+                <div class="filter-group">
+                    <label for="generationFilter">Generation:</label>
+                    <select id="generationFilter">
+                        <option value="all">All Generations</option>
+                        <option value="1">Gen 1</option>
+                        <option value="2">Gen 2</option>
+                        <option value="3">Gen 3</option>
+                        <option value="4">Gen 4</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Guess Area -->
+            <div class="guess-area">
+                <div class="input-group">
+                    <input 
+                        type="text" 
+                        id="guessInput" 
+                        placeholder="Enter Pokémon name..."
+                        autocomplete="off"
+                        class="guess-input"
+                    >
+                    <button class="guess-btn" id="guessBtn">Guess</button>
+                </div>
+                <div class="message" id="message"></div>
+            </div>
+
+            <!-- Guess History -->
+            <div class="history-section">
+                <h3>Guess History</h3>
+                <div class="guess-history" id="guessHistory">
+                    <p class="empty-history">No guesses yet</p>
+                </div>
+            </div>
+        </main>
+
+        <!-- Hints & Answer Section -->
+        <aside class="sidebar">
+            <div class="hint-box">
+                <h3>Hints</h3>
+                <button class="hint-btn" id="hintBtn">🔍 Get Hint</button>
+                <div class="hint-text" id="hintText"></div>
+            </div>
+
+            <div class="info-box">
+                <div class="guess-count" id="guessCount">Guesses: 0</div>
+                <div class="streak-count" id="streakCount">Streak: 0</div>
+                <div class="generation-badge" id="genBadge">Gen: ?</div>
+            </div>
+
+            <div class="button-group">
+                <button class="secondary-btn" id="answerBtn">📋 Show Answer</button>
+                <button class="secondary-btn" id="newGameBtn">🎮 New Game</button>
+            </div>
+        </aside>
+
+        <!-- Game Over Modal -->
+        <div class="modal" id="gameOverModal">
+            <div class="modal-content">
+                <h2 id="modalTitle">Game Over!</h2>
+                <div class="modal-stats">
+                    <p id="modalMessage"></p>
+                    <div class="modal-stats-grid">
+                        <div class="modal-stat">
+                            <span class="label">Pokémon:</span>
+                            <span class="value" id="modalPokemon">-</span>
+                        </div>
+                        <div class="modal-stat">
+                            <span class="label">Generation:</span>
+                            <span class="value" id="modalGen">-</span>
+                        </div>
+                        <div class="modal-stat">
+                            <span class="label">Total Stats:</span>
+                            <span class="value" id="modalTotal">-</span>
+                        </div>
+                        <div class="modal-stat">
+                            <span class="label">Guesses:</span>
+                            <span class="value" id="modalGuesses">-</span>
+                        </div>
+                    </div>
+                </div>
+                <button class="primary-btn" id="modalCloseBtn">Continue</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Info Modal -->
+    <div class="modal" id="infoModal">
+        <div class="modal-content info-modal">
+            <button class="close-btn" id="closeInfoBtn">×</button>
+            <h2>How to Play</h2>
+            <div class="info-content">
+                <h3>Objective</h3>
+                <p>Guess the hidden Pokémon based on its stats!</p>
+                <h3>Modes</h3>
+                <ul>
+                    <li><strong>Daily:</strong> One Pokémon per day</li>
+                    <li><strong>Endless:</strong> Play unlimited games</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <script src="pokemon-data.js"></script>
+    <script src="game.js"></script>
+</body>
+</html>
